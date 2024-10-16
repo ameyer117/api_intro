@@ -10,8 +10,8 @@ from starlette import status
 
 from db import users_collection
 from schemas.user import UserInDB
-import logging
 import base64
+import logging
 
 logging.basicConfig(
     level=logging.INFO,

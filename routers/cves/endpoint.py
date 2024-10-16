@@ -1,3 +1,4 @@
+import sys
 from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -8,6 +9,18 @@ from crud.user import get_current_user
 
 from schemas.cve import CVEInDB, CVECreation, CVEUpdate
 from schemas.user import User
+
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 router = APIRouter(
     prefix="/cves",
@@ -26,6 +39,7 @@ def read_cves(skip: int = 0, limit: int = 100, current_user: User = Depends(get_
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
 
+    logger.info(f"User {current_user.email} is fetching CVEs with skip={skip} and limit={limit}")
     cves = crud.get_cves(skip=skip, limit=limit)
     return cves
 
@@ -39,6 +53,7 @@ def read_cve(cve_id: str, current_user: User = Depends(get_current_user)):
     """
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+    logger.info(f"User {current_user.email} is fetching CVE with ID {cve_id}")
 
     cve = crud.get_cve_by_cve_id(cve_id)
     if not cve:
@@ -55,6 +70,8 @@ def create_cve_endpoint(cve: CVECreation, current_user: User = Depends(get_curre
     """
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+
+    logger.info(f"User {current_user.email} is creating a new CVE with ID {cve.cve_id} and description {cve.description}")
 
     existing_cve = crud.get_cve_by_cve_id(cve.cve_id)
     if existing_cve:
@@ -75,6 +92,8 @@ def update_cve_endpoint(cve_id: str, cve_update: CVEUpdate, current_user: User =
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
 
+    logger.info(f"User {current_user.email} is updating CVE with ID {cve_id} with fields {cve_update}")
+
     updated_cve = crud.update_cve(cve_id, cve_update)
     if not updated_cve:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="CVE not found or no changes made")
@@ -90,6 +109,8 @@ def delete_cve_endpoint(cve_id: str, current_user: User = Depends(get_current_us
     """
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+
+    logger.info(f"User {current_user.email} is deleting CVE with ID {cve_id}")
 
     deleted_cve = crud.delete_cve(cve_id)
     if not deleted_cve:
