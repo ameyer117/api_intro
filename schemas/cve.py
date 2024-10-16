@@ -32,4 +32,4 @@ class CVEUpdate(BaseModel):
 class CVEInDB(CVEBase):
 
     class Config:
-        orm_mode = True
+        from_attributes = True

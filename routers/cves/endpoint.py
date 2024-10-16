@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException
 from starlette import status
 
 from crud import cve as crud
@@ -14,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get("/cves", response_model=List[CVEInDB], summary="Retrieve a list of CVEs")
+@router.get("/", response_model=List[CVEInDB], summary="Retrieve a list of CVEs")
 def read_cves(skip: int = 0, limit: int = 100):
     """
     Retrieve a list of CVEs with pagination.
@@ -26,7 +25,7 @@ def read_cves(skip: int = 0, limit: int = 100):
     return cves
 
 
-@router.get("/cves/{cve_id}", response_model=CVEInDB, summary="Retrieve a specific CVE by ID")
+@router.get("/{cve_id}", response_model=CVEInDB, summary="Retrieve a specific CVE by ID")
 def read_cve(cve_id: str):
     """
     Retrieve a CVE by its unique identifier.
@@ -39,7 +38,7 @@ def read_cve(cve_id: str):
     return cve
 
 
-@router.post("/cves", response_model=CVEInDB, status_code=status.HTTP_201_CREATED, summary="Create a new CVE")
+@router.post("/", response_model=CVEInDB, status_code=status.HTTP_201_CREATED, summary="Create a new CVE")
 def create_cve_endpoint(cve: CVECreation):
     """
     Create a new CVE entry.
@@ -54,7 +53,7 @@ def create_cve_endpoint(cve: CVECreation):
     return db_cve
 
 
-@router.put("/cves/{cve_id}", response_model=CVEInDB, summary="Update an existing CVE")
+@router.put("/{cve_id}", response_model=CVEInDB, summary="Update an existing CVE")
 def update_cve_endpoint(cve_id: str, cve_update: CVEUpdate):
     """
     Update an existing CVE by its ID.
@@ -68,7 +67,7 @@ def update_cve_endpoint(cve_id: str, cve_update: CVEUpdate):
     return updated_cve
 
 
-@router.delete("/cves/{cve_id}", response_model=CVEInDB, summary="Delete a CVE by ID")
+@router.delete("/{cve_id}", response_model=CVEInDB, summary="Delete a CVE by ID")
 def delete_cve_endpoint(cve_id: str):
     """
     Delete a CVE by its unique identifier.
