@@ -87,7 +87,10 @@ async def get_current_user(request: Request):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    scheme, token = auth_header.strip().split(" ")
+    split_auth_header = auth_header.strip().split(" ")
+    scheme = split_auth_header[0]
+    # For sanity’s sake (user errors) the token is the last part of the header
+    token = split_auth_header[-1]
 
     try:
         if scheme.lower() == "bearer":

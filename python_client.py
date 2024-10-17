@@ -3,8 +3,13 @@ from datetime import datetime
 import uuid
 import random
 
+# Note to run this you must install the requests library via a virtual environment (For example)
+# python3 -m venv .venv
+# source .venv/bin/activate
+# pip install requests
+
 # Base URL of the API
-BASE_URL = 'http://localhost:8000'
+BASE_URL = 'https://api-intro-app-vhrnt.ondigitalocean.app'
 
 def create_user(email: str, full_name: str, password: str):
     """
