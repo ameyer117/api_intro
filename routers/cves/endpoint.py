@@ -78,7 +78,7 @@ def create_cve_endpoint(cve: CVECreation, current_user: User = Depends(get_curre
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="CVE with this ID already exists")
 
     db_cve = crud.create_cve(cve)
-    return db_cve
+    return db_cve, status.HTTP_201_CREATED
 
 
 @router.put("/{cve_id}", response_model=CVEInDB, summary="Update an existing CVE")

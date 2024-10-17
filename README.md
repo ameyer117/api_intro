@@ -148,17 +148,16 @@ Here's a summary of the API endpoints we'll interact with:
     - **Expected Response**: `200 OK` with an `access_token`.
 
 5. **Extract and Save the Token**:
+    - In order to be authenticated in future requests, you need to save the `access_token` in the Postman environment
     - In the response, locate the `access_token`.
     - **Set Environment Variable**:
         - Click the **Tests** tab.
-        - Add the following script to save the token:
-
-        ```javascript
-        const response = pm.response.json();
-        pm.environment.set("access_token", response.access_token);
-        ```
-
-    - Click **Send** again to execute the test script.
+        - Hover over the "CVE Training API" collection and click the **•••** icon.
+        - Select **Edit**.
+        - Select the **Authorization** tab.
+        - Select **Bearer Token**.
+        - Enter the `access_token` value in the **Token** field. __(Do not include `Bearer` here, Postman will do this for you!)__
+        - Close the **CVE Training API** collection settings tab.
 
 6. **Save the Request**:
     - Click **Save** and add it to the collection.
