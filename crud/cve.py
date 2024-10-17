@@ -35,7 +35,7 @@ def update_cve(cve_id: str, cve_update: CVEUpdate):
     logger.info(f"Updating CVE {cve_id}")
     update_data = {k: v for k, v in cve_update.model_dump().items() if v is not None}
     return cves_collection.find_one_and_update(
-        {"id": cve_id},
+        {"cve_id": cve_id},
         {"$set": update_data},
         return_document=ReturnDocument.AFTER
     )

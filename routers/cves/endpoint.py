@@ -94,6 +94,11 @@ def update_cve_endpoint(cve_id: str, cve_update: CVEUpdate, current_user: User =
 
     logger.info(f"User {current_user.email} is updating CVE with ID {cve_id} with fields {cve_update}")
 
+    # Make sure the CVE exists first
+    existing_cve = crud.get_cve_by_cve_id(cve_id)
+    if not existing_cve:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="CVE not found")
+
     updated_cve = crud.update_cve(cve_id, cve_update)
     if not updated_cve:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="CVE not found or no changes made")
@@ -112,7 +117,12 @@ def delete_cve_endpoint(cve_id: str, current_user: User = Depends(get_current_us
 
     logger.info(f"User {current_user.email} is deleting CVE with ID {cve_id}")
 
+    # Make sure the CVE exists first
+    existing_cve = crud.get_cve_by_cve_id(cve_id)
+    if not existing_cve:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="CVE not found")
+
     deleted_cve = crud.delete_cve(cve_id)
     if not deleted_cve:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="CVE not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="CVE failed to delete")
     return deleted_cve

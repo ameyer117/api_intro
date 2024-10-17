@@ -7,3 +7,4 @@ passlib
 starlette
 python-multipart
 bcrypt
+requests
