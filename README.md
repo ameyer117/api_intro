@@ -151,7 +151,14 @@ Here's a summary of the API endpoints we'll interact with:
     - In order to be authenticated in future requests, you need to save the `access_token` in the Postman environment
     - In the response, locate the `access_token`.
     - **Set Environment Variable**:
-        - Click the **Tests** tab.
+        - Click the **Scripts** tab (formerly known as "Tests" in some versions).
+        - Add the following JavaScript code:
+          ```javascript
+          var jsonData = pm.response.json();
+          pm.environment.set("access_token", jsonData.access_token);
+          ```
+        - This script will automatically set the `access_token` as an environment variable.
+    - Alternatively, you can manually set the token:
         - Hover over the "CVE Training API" collection and click the **•••** icon.
         - Select **Edit**.
         - Select the **Authorization** tab.
@@ -177,9 +184,9 @@ Here's a summary of the API endpoints we'll interact with:
     - Set the request type to `GET`.
     - URL: `{{baseUrl}}/users/me`
 
-2. **Set Headers**:
-    - Click on the **Headers** tab.
-    - Add `Authorization` with the value `Bearer {{access_token}}`.
+2. **Set Authorization**:
+    - Click on the **Authorization** tab.
+    - Select "Inherit auth from parent" to use the token set in the collection.
 
 3. **Send the Request**:
     - Click **Send**.
@@ -187,7 +194,6 @@ Here's a summary of the API endpoints we'll interact with:
 
 4. **Save the Request**:
     - Click **Save** and add it to the collection.
-
 
 ---
 
@@ -204,12 +210,15 @@ Here's a summary of the API endpoints we'll interact with:
     - Set the request type to `POST`.
     - URL: `{{baseUrl}}/cves/`
 
-2. **Set Headers**:
+2. **Set Authorization**:
+    - Click on the **Authorization** tab.
+    - Select "Inherit auth from parent" to use the token set in the collection.
+
+3. **Set Headers**:
     - Click on the **Headers** tab.
-    - Add `Authorization` with the value `Bearer {{access_token}}`.
     - Ensure `Content-Type` is set to `application/json`.
 
-3. **Set Body**:
+4. **Set Body**:
     - Click on the **Body** tab.
     - Select **raw** and choose **JSON**.
     - Enter the following JSON, replacing `cve_id` with a unique ID:
@@ -223,13 +232,12 @@ Here's a summary of the API endpoints we'll interact with:
     }
     ```
 
-4. **Send the Request**:
+5. **Send the Request**:
     - Click **Send**.
     - **Expected Response**: `201 Created` with CVE details.
 
-5. **Save the Request**:
+6. **Save the Request**:
     - Click **Save** and add it to the collection.
-
 
 ---
 
@@ -246,9 +254,9 @@ Here's a summary of the API endpoints we'll interact with:
     - Set the request type to `GET`.
     - URL: `{{baseUrl}}/cves/`
 
-2. **Set Headers**:
-    - Click on the **Headers** tab.
-    - Add `Authorization` with the value `Bearer {{access_token}}`.
+2. **Set Authorization**:
+    - Click on the **Authorization** tab.
+    - Select "Inherit auth from parent" to use the token set in the collection.
 
 3. **Set Query Parameters** (Optional):
     - Click on the **Params** tab.
@@ -280,9 +288,9 @@ Here's a summary of the API endpoints we'll interact with:
     - URL: `{{baseUrl}}/cves/CVE-2023-12345`  
       *(Replace `CVE-2023-12345` with your actual CVE ID)*
 
-2. **Set Headers**:
-    - Click on the **Headers** tab.
-    - Add `Authorization` with the value `Bearer {{access_token}}`.
+2. **Set Authorization**:
+    - Click on the **Authorization** tab.
+    - Select "Inherit auth from parent" to use the token set in the collection.
 
 3. **Send the Request**:
     - Click **Send**.
@@ -307,28 +315,33 @@ Here's a summary of the API endpoints we'll interact with:
     - URL: `{{baseUrl}}/cves/CVE-2023-12345`  
       *(Replace `CVE-2023-12345` with your actual CVE ID)*
 
-2. **Set Headers**:
+2. **Set Authorization**:
+    - Click on the **Authorization** tab.
+    - Select "Inherit auth from parent" to use the token set in the collection.
+
+3. **Set Headers**:
     - Click on the **Headers** tab.
-    - Add `Authorization` with the value `Bearer {{access_token}}`.
     - Ensure `Content-Type` is set to `application/json`.
 
-3. **Set Body**:
+4. **Set Body**:
     - Click on the **Body** tab.
     - Select **raw** and choose **JSON**.
-    - Enter the fields you want to update. For example:
+    - Enter all fields of the CVE, updating only the ones you want to change. For example:
 
     ```json
     {
+        "cve_id": "CVE-2023-12345",
         "description": "Updated CVE description.",
-        "severity": "CRITICAL"
+        "severity": "CRITICAL",
+        "published_date": "2023-10-17T00:00:00Z"
     }
     ```
 
-4. **Send the Request**:
+5. **Send the Request**:
     - Click **Send**.
     - **Expected Response**: `200 OK` with updated CVE details.
 
-5. **Save the Request**:
+6. **Save the Request**:
     - Click **Save** and add it to the collection.
 
 ---
@@ -347,9 +360,9 @@ Here's a summary of the API endpoints we'll interact with:
     - URL: `{{baseUrl}}/cves/CVE-2023-12345`  
       *(Replace `CVE-2023-12345` with your actual CVE ID)*
 
-2. **Set Headers**:
-    - Click on the **Headers** tab.
-    - Add `Authorization` with the value `Bearer {{access_token}}`.
+2. **Set Authorization**:
+    - Click on the **Authorization** tab.
+    - Select "Inherit auth from parent" to use the token set in the collection.
 
 3. **Send the Request**:
     - Click **Send**.
